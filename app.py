@@ -505,10 +505,51 @@ tbody tr td {
     background: rgba(255, 255, 255, .76) !important;
 }
 
+/* ===== 移动端适配（手机 + 小平板） ===== */
 @media (max-width: 900px) {
-    .block-container { padding: 18px; }
+    .block-container { padding: 16px 14px !important; }
     .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .hero { padding-top: 18px; }
+    .hero { padding-top: 18px; min-height: 140px; padding: 28px 16px 24px; }
+    .hero-title { font-size: 1.2rem !important; }
+    .hero-subtitle { font-size: .88rem !important; }
+    .brand-logo { width: 34px; height: 34px; font-size: 13px; }
+    .brand-title { font-size: .82rem; }
+}
+
+@media (max-width: 640px) {
+    .block-container { padding: 10px 10px 40px !important; }
+
+    .metric-grid { grid-template-columns: 1fr; }
+
+    .hero { padding: 20px 14px 18px; min-height: 120px; }
+    .hero-title { font-size: 1.0rem !important; }
+    .hero-subtitle { font-size: .78rem !important; }
+    .hero-badge { font-size: .72rem; padding: 4px 10px; }
+
+    div[data-testid="stSidebarContent"] label[data-baseweb="radio"] {
+        min-height: 36px;
+        padding: 7px 8px 7px 10px;
+        font-size: .88rem;
+    }
+
+    .report-header { flex-direction: column; align-items: start; gap: 4px; }
+    .report-header-left { flex-wrap: wrap; gap: 6px; }
+    .report-crop { font-size: 1rem; }
+    .section-head { flex-direction: column; gap: 4px; }
+
+    .glass-card, .prescription-card { padding: 14px; }
+    .metric-card { padding: 10px; }
+    .metric-value { font-size: 1.0rem; }
+
+    .stButton > button, .stDownloadButton > button {
+        min-height: 38px;
+        font-size: .88rem;
+    }
+
+    table { font-size: .78rem; }
+    div[data-testid="stDataFrame"] { font-size: .78rem; }
+
+    .brand { padding: 2px 4px 8px; margin-bottom: 6px; }
 }
 
 /* ===== 结果页 ===== */
