@@ -70,7 +70,42 @@ header[data-testid="stHeader"]::before {
     display: none;
 }
 
-[data-testid="collapsedControl"],
+/* ===== 全局强制深色文字，解决手机白底白字 ===== */
+.stApp, .stApp *, .stApp label, .stApp span, .stApp p,
+div[data-testid="stMarkdown"] p,
+div[data-testid="stText"],
+.st-bd, .st-c0, .st-c1, .st-c2, .st-c3,
+[data-testid="stSidebar"] *,
+[data-testid="stSelectbox"] *,
+[data-testid="stSelectbox"] div,
+[data-testid="stSelectbox"] label,
+[data-baseweb="select"] *,
+[data-baseweb="select"] span,
+div[data-testid="stTextInput"] input,
+div[data-testid="stNumberInput"] input,
+textarea, select,
+.stButton button, .stDownloadButton button,
+div[role="radiogroup"] label,
+div[role="radiogroup"] label * {
+    color: #1a2a20 !important;
+}
+
+/* 输入框背景加深一点 */
+div[data-testid="stTextInput"] input,
+div[data-testid="stNumberInput"] input,
+textarea,
+div[data-baseweb="select"] > div {
+    background: #ffffff !important;
+    color: #1a2a20 !important;
+}
+
+/* 侧边栏选中项文字加粗 */
+div[data-testid="stSidebarContent"] label[data-baseweb="radio"]:has(input:checked) * {
+    color: #1f6f43 !important;
+    font-weight: 800 !important;
+}
+
+div[data-testid="collapsedControl"],
 [data-testid="stSidebarCollapsedControl"] {
     display: flex !important;
     visibility: visible !important;
