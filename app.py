@@ -70,44 +70,14 @@ header[data-testid="stHeader"]::before {
     display: none;
 }
 
-/* ===== 全局强制深色文字（覆盖 Win / Mac / 手机）===== */
-/* 使用通配符和 `all` 一次性覆盖所有 Streamlit 原生组件 */
-.stApp,
-[data-testid="stAppViewContainer"],
-[data-testid="stAppViewBlockContainer"],
-[data-testid="stSidebar"],
-[data-testid="stMain"],
-[data-testid="stToolbar"],
-[data-testid="stDecoration"],
-[data-testid="stStatusWidget"],
-[class*="st-"],
-div[role="radiogroup"] {
-    color: #1a2a20 !important;
-    -webkit-text-fill-color: #1a2a20 !important;
-}
+/* ===== 全局深色文字 — 已禁用（改为独立组件方式，避免覆盖下拉框占位文字）===== */
+/* 以下两段全局强制在 Mac 上会覆盖下拉框的灰色占位文字，所以注释掉。
+   各输入组件样式已分别在下面的「占位文字样式」和「统一的输入组件样式」中单独定义。 */
 
-/* 连带所有子孙元素强制继承，绕过 Mac Safari 的 color 隔离 */
-[data-testid="stAppViewContainer"] *,
-[data-testid="stSidebar"] *,
-[data-testid="stSidebarContent"] *,
-[data-testid="stSelectbox"] *,
-[data-testid="stTextInput"] *,
-[data-testid="stNumberInput"] *,
-[data-baseweb="select"] *,
-div[role="radiogroup"] *,
-.st-bd, .st-c0, .st-c1, .st-c2, .st-c3,
-.stButton *, .stDownloadButton *,
-[data-testid="stMarkdown"] *,
-[data-testid="stText"] * {
-    color: #1a2a20 !important;
-    -webkit-text-fill-color: #1a2a20 !important;
-}
-
-/* 输入框/下拉框纯白底 + 深色字 */
+/* 输入框纯白底 + 深色字（注意：不包含下拉框容器，下拉框占位文字需保留灰色） */
 div[data-testid="stTextInput"] input,
 div[data-testid="stNumberInput"] input,
-[data-testid="stTextInput"] textarea,
-div[data-baseweb="select"] > div {
+[data-testid="stTextInput"] textarea {
     background: #ffffff !important;
     color: #1a2a20 !important;
     -webkit-text-fill-color: #1a2a20 !important;
@@ -502,27 +472,197 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
     margin-bottom: 8px;
 }
 
+/* ===== 统一的输入组件样式（输入框 / 数字框 / 多选 / 文本域） ===== */
+/* 注意：下拉框（Select）不在这里设置颜色，由下方的下拉框专有规则控制 */
+div[data-testid="stTextInput"] input,
+div[data-testid="stNumberInput"] input,
+div[data-testid="stNumberInput"] input,
+div[data-testid="stTextArea"] textarea,
+textarea,
+div[data-testid="stMultiSelect"] > div {
+    border-radius: 14px !important;
+    border: 1.5px solid rgba(46, 91, 68, .18) !important;
+    background: #ffffff !important;
+    font-size: 1rem !important;
+    font-weight: 540 !important;
+    min-height: 44px !important;
+    box-shadow: 0 2px 6px rgba(34, 60, 45, .04) !important;
+    transition: border-color .18s ease, box-shadow .18s ease !important;
+}
+
+/* 输入框聚焦状态（绿色边框） */
+div[data-baseweb="select"] > div:focus-within,
+div[data-testid="stTextInput"] input:focus,
+div[data-testid="stNumberInput"] input:focus,
+div[data-testid="stTextArea"] textarea:focus,
+div[data-testid="stMultiSelect"] > div:focus-within {
+    border-color: #2e8b57 !important;
+    box-shadow: 0 0 0 3px rgba(46, 139, 87, .12) !important;
+}
+
+/* ===== 占位文字样式（未选中/未填写时灰色，选中/填写后黑色） ===== */
+
+/* ===== 占位文字颜色统一（全站所有占位/未选中均为同一种灰色） ===== */
+.placeholder-color,
+div[data-testid="stTextInput"] input::placeholder,
+div[data-testid="stNumberInput"] input::placeholder,
+textarea::placeholder,
+div[data-testid="stSelectbox"] [data-baseweb="select"] [data-testid="stSelectboxPlaceholder"],
+div[data-testid="stMultiSelect"] [data-baseweb="select"] span:first-child,
+div[data-testid="stMultiSelect"] [data-baseweb="select"] [data-baseweb="tag"] + span,
+div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div:first-child,
+div[data-testid="stMultiSelect"] [data-baseweb="select"] [placeholder],
+div[data-testid="stMultiSelect"] [data-baseweb="select"] [data-testid="stMultiSelect"] > div > span {
+    color: #8f9d96 !important;
+    font-weight: 420 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8f9d96 !important;
+}
+
+/* 输入框已有内容 → 自动黑 */
+div[data-testid="stTextInput"] input:not(:placeholder-shown),
+div[data-testid="stNumberInput"] input:not(:placeholder-shown),
+textarea:not(:placeholder-shown) {
+    color: #1a2a20 !important;
+    font-weight: 540 !important;
+}
+
+/* 下拉框选中 → 黑色 */
+div[data-testid="stSelectbox"] [data-baseweb="select"] div[role="combobox"] span[data-baseweb="tag"] + span,
+div[data-testid="stSelectbox"] [data-baseweb="select"] div[role="combobox"] > span,
+div[data-testid="stSelectbox"] [data-baseweb="select"] div[role="combobox"] > div > span {
+    color: #1a2a20 !important;
+    -webkit-text-fill-color: #1a2a20 !important;
+}
+
+/* 下拉框弹出选项列表中的文字 */
+div[data-testid="stSelectbox"] [data-baseweb="popover"] li,
+div[data-testid="stSelectbox"] [data-baseweb="popover"] li span,
+div[data-testid="stSelectbox"] [data-baseweb="popover"] [role="option"] {
+    color: #1a2a20 !important;
+    -webkit-text-fill-color: #1a2a20 !important;
+}
+
+/* 多选未选中时提示 */
+div[data-testid="stMultiSelect"] [data-baseweb="select"] span:first-child,
+div[data-testid="stMultiSelect"] [data-baseweb="select"] [data-baseweb="tag"] + span,
+div[data-testid="stMultiSelect"] [data-baseweb="select"] > div > div:first-child,
+div[data-testid="stMultiSelect"] [data-baseweb="select"] [placeholder],
+div[data-testid="stMultiSelect"] [data-baseweb="select"] [data-testid="stMultiSelect"] > div > span {
+    color: #aab5ad !important;
+    font-weight: 420 !important;
+    -webkit-text-fill-color: #aab5ad !important;
+}
+
+/* 多选选中项的标签 */
+div[data-testid="stMultiSelect"] span[data-baseweb="tag"] {
+    color: #1f6f43 !important;
+}
+
+/* 标签（Label）样式 */
+div[data-testid="stTextInput"] label,
+div[data-testid="stNumberInput"] label,
+div[data-testid="stSelectbox"] label,
+div[data-testid="stMultiSelect"] label,
+div[data-testid="stTextArea"] label,
+div[data-testid="stSlider"] label,
+div[data-testid="stFileUploader"] label {
+    color: #1a2a20 !important;
+    font-weight: 640 !important;
+    font-size: .92rem !important;
+    margin-bottom: 4px !important;
+    -webkit-text-fill-color: #1a2a20 !important;
+}
+
+/* 下拉框（Select） */
+div[data-baseweb="select"] {
+    border-radius: 14px !important;
+    cursor: pointer !important;
+}
+
+div[data-baseweb="select"] > div {
+    background: #ffffff !important;
+    font-weight: 540 !important;
+    border-radius: 14px !important;
+    border: 1.5px solid rgba(46, 91, 68, .18) !important;
+    min-height: 44px !important;
+    box-shadow: 0 2px 6px rgba(34, 60, 45, .04) !important;
+}
+
+/* 聚焦时边框变绿 */
+div[data-baseweb="select"] > div:focus-within {
+    border-color: #2e8b57 !important;
+    box-shadow: 0 0 0 3px rgba(46, 139, 87, .12) !important;
+}
+
+div[data-baseweb="select"] span:not([data-testid="stSelectboxPlaceholder"]) {
+    color: #1a2a20 !important;
+}
+
+/* 多选（MultiSelect） */
+div[data-testid="stMultiSelect"] span[data-baseweb="tag"] {
+    background: #e6f3eb !important;
+    border-radius: 12px !important;
+    color: #1f6f43 !important;
+    font-weight: 600 !important;
+}
+
+/* 滑块（Slider） */
+div[data-testid="stSlider"] div[data-baseweb="slider"] div[role="slider"] {
+    background: #2e8b57 !important;
+}
+
+div[data-testid="stSlider"] div[data-baseweb="slider"] div[role="slider"]:focus {
+    box-shadow: 0 0 0 3px rgba(46, 139, 87, .18) !important;
+}
+
+/* 按钮 */
 .stButton > button,
 .stDownloadButton > button {
     border-radius: 14px !important;
-    min-height: 46px;
-    font-weight: 780 !important;
+    min-height: 48px;
+    font-weight: 720 !important;
+    font-size: .96rem !important;
     border: 1px solid rgba(46, 139, 87, .18) !important;
-    box-shadow: 0 12px 26px rgba(34, 60, 45, .08);
+    box-shadow: 0 8px 20px rgba(34, 60, 45, .06);
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.stButton > button:hover,
+.stDownloadButton > button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(34, 60, 45, .10);
+}
+
+.stButton > button:active,
+.stDownloadButton > button:active {
+    transform: translateY(0);
 }
 
 .stButton > button[kind="primary"] {
-    background: linear-gradient(135deg, var(--primary), #5aa97d) !important;
+    background: linear-gradient(135deg, #2e8b57, #5aa97d) !important;
     border: 0 !important;
+    color: #ffffff !important;
+    font-weight: 760 !important;
+    box-shadow: 0 12px 28px rgba(46, 139, 87, .20) !important;
 }
 
-div[data-baseweb="select"] > div,
-div[data-testid="stTextInput"] input,
-div[data-testid="stNumberInput"] input,
-textarea {
+/* 文件上传 */
+div[data-testid="stFileUploader"] {
+    border: 1.5px dashed rgba(46, 91, 68, .18) !important;
     border-radius: 14px !important;
-    border-color: rgba(46, 91, 68, .16) !important;
-    background: rgba(255, 255, 255, .76) !important;
+    padding: 10px !important;
+    background: rgba(255, 255, 255, .60) !important;
+}
+
+div[data-testid="stFileUploader"]:hover {
+    border-color: #2e8b57 !important;
+    background: rgba(230, 243, 235, .30) !important;
+}
+
+/* 侧边栏 radio 标签 */
+div[data-testid="stSidebarContent"] label[data-baseweb="radio"] {
+    font-size: .92rem !important;
 }
 
 /* 下拉框箭头和整个下拉区域鼠标变小手 */
