@@ -70,39 +70,54 @@ header[data-testid="stHeader"]::before {
     display: none;
 }
 
-/* ===== 全局强制深色文字，解决手机白底白字 ===== */
-.stApp, .stApp *, .stApp label, .stApp span, .stApp p,
-div[data-testid="stMarkdown"] p,
-div[data-testid="stText"],
-.st-bd, .st-c0, .st-c1, .st-c2, .st-c3,
-[data-testid="stSidebar"] *,
-[data-testid="stSelectbox"] *,
-[data-testid="stSelectbox"] div,
-[data-testid="stSelectbox"] label,
-[data-baseweb="select"] *,
-[data-baseweb="select"] span,
-div[data-testid="stTextInput"] input,
-div[data-testid="stNumberInput"] input,
-textarea, select,
-.stButton button, .stDownloadButton button,
-div[role="radiogroup"] label,
-div[role="radiogroup"] label * {
+/* ===== 全局强制深色文字（覆盖 Win / Mac / 手机）===== */
+/* 使用通配符和 `all` 一次性覆盖所有 Streamlit 原生组件 */
+.stApp,
+[data-testid="stAppViewContainer"],
+[data-testid="stAppViewBlockContainer"],
+[data-testid="stSidebar"],
+[data-testid="stMain"],
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
+[data-testid="stStatusWidget"],
+[class*="st-"],
+div[role="radiogroup"] {
     color: #1a2a20 !important;
+    -webkit-text-fill-color: #1a2a20 !important;
 }
 
-/* 输入框背景加深一点 */
+/* 连带所有子孙元素强制继承，绕过 Mac Safari 的 color 隔离 */
+[data-testid="stAppViewContainer"] *,
+[data-testid="stSidebar"] *,
+[data-testid="stSidebarContent"] *,
+[data-testid="stSelectbox"] *,
+[data-testid="stTextInput"] *,
+[data-testid="stNumberInput"] *,
+[data-baseweb="select"] *,
+div[role="radiogroup"] *,
+.st-bd, .st-c0, .st-c1, .st-c2, .st-c3,
+.stButton *, .stDownloadButton *,
+[data-testid="stMarkdown"] *,
+[data-testid="stText"] * {
+    color: #1a2a20 !important;
+    -webkit-text-fill-color: #1a2a20 !important;
+}
+
+/* 输入框/下拉框纯白底 + 深色字 */
 div[data-testid="stTextInput"] input,
 div[data-testid="stNumberInput"] input,
-textarea,
+[data-testid="stTextInput"] textarea,
 div[data-baseweb="select"] > div {
     background: #ffffff !important;
     color: #1a2a20 !important;
+    -webkit-text-fill-color: #1a2a20 !important;
 }
 
-/* 侧边栏选中项文字加粗 */
+/* 侧边栏 radio 选中高亮 */
 div[data-testid="stSidebarContent"] label[data-baseweb="radio"]:has(input:checked) * {
     color: #1f6f43 !important;
     font-weight: 800 !important;
+    -webkit-text-fill-color: #1f6f43 !important;
 }
 
 div[data-testid="collapsedControl"],
